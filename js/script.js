@@ -259,28 +259,39 @@ function displayMealsDescriptions(data) {
 
 // //!------------ Start Section connection API Search Meals by Name ---------------/
 
-async function connectionSearchMealsByName(name) {
+async function searchInputName(name) {
 
     let searchMealsDataCon = await fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${name}`);
     let searchMealsDataByName = await searchMealsDataCon.json();
-    // console.log(searchMealsData);
-    return searchMealsDataByName;
 
+    searchMealsDataByName.meals ? displaySearchMealsByName(searchMealsDataByName) : displaySearchMealsByName([])
 }
-
-async function startSearchAppByName(name) {
-    let SearchData = await connectionSearchMealsByName(name);
-    if (SearchData.meals !== null) {
-        displaySearchMealsByName(SearchData);
-    }
-}
-startSearchAppByName();
-// document.addEventListener('DOMContentLoaded', startSearchAppByName);
-
 //!------------ End Section connection API Search Meals by Name ---------------/
 
 
 //!------------ Start Section Search Meals By Name -----------------*/
+let rowSearch = document.getElementById("rowSearch");
+
+function displaySearchMealsByName(data) {
+    var Data = data.meals;
+    let cartona = "";
+    for (let i = 0; i < 25; i++) {
+        cartona += `
+                <div class="col-md-3" >
+                    <div class="card  border-0 rounded-2" id="cardImg" onclick="getMealsDescriptions('${Data[i].idMeal}')">
+                        <div class="img rounded-2">
+                            <div class="layout rounded-2 d-flex align-items-center" id="layoutImg">
+                                <h1 class="text-black ms-2"> ${Data[i].strMeal} </h1>
+                            </div>
+                            <img src="${Data[i].strMealThumb}" alt="img" class="w-100 rounded-2" id="Images">
+                        </div>
+                    </div>
+                </div>
+            `;
+    }
+    rowSearch.innerHTML = cartona;
+}
+
 let SearchMealsBtn = document.getElementById("SearchMealsBtn");
 SearchMealsBtn.addEventListener('click', () => {
 
@@ -315,43 +326,6 @@ SearchMealsBtn.addEventListener('click', () => {
         $('body').find('.js-menu-toggle').removeClass('active');
     }
 })
-
-
-let searchByName = document.getElementById("searchByName");
-let rowSearch = document.getElementById("rowSearch");
-
-function searchInputName() {
-    let name = searchByName.value;
-    if (name != "") {
-        startSearchAppByName(name);
-    }
-}
-
-function displaySearchMealsByName(data) {
-
-    $(function () {
-        $('#preloader').fadeIn(800).fadeOut(1000);
-    })
-
-
-    var Data = data.meals;
-    let cartona = "";
-    for (let i = 0; i < 25; i++) {
-        cartona += `
-                <div class="col-md-3" >
-                    <div class="card  border-0 rounded-2" id="cardImg" onclick="getMealsDescriptions('${Data[i].idMeal}')">
-                        <div class="img rounded-2">
-                            <div class="layout rounded-2 d-flex align-items-center" id="layoutImg">
-                                <h1 class="text-black ms-2"> ${Data[i].strMeal} </h1>
-                            </div>
-                            <img src="${Data[i].strMealThumb}" alt="img" class="w-100 rounded-2" id="Images">
-                        </div>
-                    </div>
-                </div>
-            `;
-    }
-    rowSearch.innerHTML = cartona;
-}
 //!------------ End Section Search Meals -----------------*/
 
 //!==================================================/
@@ -360,46 +334,18 @@ function displaySearchMealsByName(data) {
 
 // //!------------ Start Section connection API Search Meals by F-letter ---------------/
 
-async function connectionSearchMealsByFLetter(Letter) {
-
+async function searchInputFletter(Letter) {
+    Letter == "" ? Letter = "a" : "";
     let searchMealsDataCon = await fetch(`https://www.themealdb.com/api/json/v1/1/search.php?f=${Letter}`);
     let searchMealsDataByFLetter = await searchMealsDataCon.json();
-    // console.log(searchMealsData);
-    return searchMealsDataByFLetter;
 
+    searchMealsDataByFLetter.meals ? displaySearchMealsByFLetter(searchMealsDataByFLetter) : displaySearchMealsByFLetter([])
 }
-
-async function startSearchAppByFLetter(Letter = "") {
-    let SearchData = await connectionSearchMealsByFLetter(Letter);
-
-    if (SearchData.meals !== null) {
-        displaySearchMealsByFLetter(SearchData);
-    }
-}
-startSearchAppByFLetter();
-// document.addEventListener('DOMContentLoaded', startSearchAppByFLetter);
-
 //!------------ End Section connection API Search Meals by F-letter ---------------/
 
 //!------------ End Section Search Meals By F-letter ---------------/
 
-let searchByFletter = document.getElementById("searchByFletter")
-
-
-function searchInputFletter() {
-    let Letter = searchByFletter.value;
-    if (Letter != "") {
-        startSearchAppByFLetter(Letter);
-    }
-    // console.log(searchByFletter.value)
-}
-
 function displaySearchMealsByFLetter(data) {
-
-    $(function () {
-        $('#preloader').fadeIn(800).fadeOut(1000);
-    })
-
     var Data = data.meals;
     let cartona = " ";
     for (let i = 0; i < Data.length; i++) {
