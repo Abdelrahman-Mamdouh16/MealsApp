@@ -1,5 +1,4 @@
 //!------------ Start Section Global get ---------------/
-
 let meals = document.getElementById("meals");
 let mealsDescription = document.getElementById('mealsDescription');
 let mealsSearch = document.getElementById("mealsSearch")
@@ -8,46 +7,43 @@ let mealsArea = document.getElementById("mealsArea");
 let mealsIngredients = document.getElementById("mealsIngredients");
 let ContactUs = document.getElementById("ContactUs");
 
-let returnIcon = document.getElementById("returnIcon");
+function close() {
+    meals.classList.remove('d-block');
+    meals.classList.add('d-none');
 
-returnIcon.addEventListener('click', async function () {
+    mealsDescription.classList.remove('d-block');
+    mealsDescription.classList.add('d-none');
+
+    mealsSearch.classList.remove('d-block');
+    mealsSearch.classList.add('d-none');
+
+    mealsCategories.classList.remove('d-block');
+    mealsCategories.classList.add('d-none');
+
+    mealsArea.classList.remove('d-block');
+    mealsArea.classList.add('d-none');
+
+    mealsIngredients.classList.remove('d-block');
+    mealsIngredients.classList.add('d-none');
+
+    ContactUs.classList.remove('d-block');
+    ContactUs.classList.add('d-none');
+
+    $('body').removeClass('show-sidebar');
+    $('body').find('.js-menu-toggle').removeClass('active');
+};
+let returnIcon = document.getElementById("returnIcon");
+returnIcon.addEventListener('click', function () {
     $(function () {
         $('#preloader').fadeIn(1000).fadeOut(800);
-    })
-
+    });
     let isHidden = true;
     if (isHidden == true) {
-
+        close();
         meals.classList.remove('d-none');
         meals.classList.add('d-block');
-
-        ContactUs.classList.remove('d-block');
-        ContactUs.classList.add('d-none');
-
-        mealsDescription.classList.add('d-none');
-        mealsDescription.classList.remove('d-block');
-
-        mealsCategories.classList.remove('d-block');
-        mealsCategories.classList.add('d-none');
-
-        mealsArea.classList.remove('d-block');
-        mealsArea.classList.add('d-none');
-
-        mealsIngredients.classList.remove('d-block');
-        mealsIngredients.classList.add('d-none');
-
-        mealsSearch.classList.remove('d-block');
-        mealsSearch.classList.add('d-none');
-
-        $('body').removeClass('show-sidebar');
-        $('body').find('.js-menu-toggle').removeClass('active');
-
-        let mealsData = await connectionMainMeals();
-        displayMainMeals(mealsData);
     }
-
 });
-
 //!------------ End Section Global get ---------------/
 
 //!------------ Start Section side minu ---------------/
@@ -89,26 +85,23 @@ async function connectionMainMeals() {
     let mealsData = await mealsDataCon.json();
     return mealsData;
 }
-
 async function startMainApp() {
     let mealsData = await connectionMainMeals();
 
-    let arr=[];
+    let arr = [];
     arr.push(mealsData);
-    if(arr.length<0){
+    if (arr.length < 0) {
         $(function () {
             $('#preloader');
         })
-    }else{
+    } else {
         $(function () {
             $('#preloader').fadeOut(500);
         })
         displayMainMeals(mealsData);
     }
-}
-// startMainApp()
+};
 document.addEventListener('DOMContentLoaded', startMainApp);
-
 //!------------ End Section connection API Main Meals ---------------/
 
 //!==================================================/
@@ -137,7 +130,6 @@ function displayMainMeals(data) {
     }
     row.innerHTML = cartona;
 }
-
 //!------------ End Section side Main -----------------*/
 
 //!==================================================/
@@ -145,47 +137,24 @@ function displayMainMeals(data) {
 //!==================================================/
 
 //!------------ Start Section connection meals descriptions ---------------/
-
 async function getMealsDescriptions(idMeal) {
     let mealsDataCon = await fetch(`https://themealdb.com/api/json/v1/1/lookup.php?i=${idMeal}`);
     let mealsData = await mealsDataCon.json();
 
     let isHidden = true;
     if (isHidden == true) {
-
-        meals.classList.remove('d-block');
-        meals.classList.add('d-none');
-
+        close();
         mealsDescription.classList.remove('d-none');
         mealsDescription.classList.add('d-block');
-
-        ContactUs.classList.remove('d-block');
-        ContactUs.classList.add('d-none');
-
-        mealsCategories.classList.remove('d-block');
-        mealsCategories.classList.add('d-none');
-
-        mealsArea.classList.remove('d-block');
-        mealsArea.classList.add('d-none');
-
-        mealsIngredients.classList.remove('d-block');
-        mealsIngredients.classList.add('d-none');
-
-        mealsSearch.classList.remove('d-block');
-        mealsSearch.classList.add('d-none');
-    }
+    };
     let mealsDescData = mealsData;
     if (mealsDescData.meals != null) {
         displayMealsDescriptions(mealsDescData);
     }
-
-    // return mealsData;
-}
+};
 //!------------ End Section connection meals descriptions ---------------/
 
-
 //!------------ Start Section display meals descriptions -----------------*/
-
 let rowMealsDescription = document.getElementById("rowMealsDescription");
 
 function displayMealsDescriptions(data) {
@@ -197,7 +166,6 @@ function displayMealsDescriptions(data) {
             ingredients += `<li class="alert alert-info m-2 p-1">${Data[`strMeasure${i}`]} ${Data[`strIngredient${i}`]}</li>`
         }
     }
-
     let tags = Data.strTags?.split(",")
     if (!tags) tags = []
 
@@ -206,8 +174,6 @@ function displayMealsDescriptions(data) {
         tagsStr += `
         <li class="alert alert-danger m-2 p-1">${tags[i]}</li>`
     }
-
-
     let cartona = "";
     cartona += `
         <div class="col-md-4">
@@ -239,88 +205,39 @@ function displayMealsDescriptions(data) {
         `;
     rowMealsDescription.innerHTML = cartona;
 }
-
 //!------------ End Section display meals descriptions -----------------*/
 
 //!==================================================/
 //!==================================================/
 //!==================================================/
 
-
-// //!------------ Start Section connection API Search Meals by Name ---------------/
-
-async function searchInputName(name) {
-
-    let searchMealsDataCon = await fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${name}`);
-    let searchMealsDataByName = await searchMealsDataCon.json();
-
-    searchMealsDataByName.meals ? displaySearchMealsByName(searchMealsDataByName) : displaySearchMealsByName([])
-}
-//!------------ End Section connection API Search Meals by Name ---------------/
-
-
-//!------------ Start Section Search Meals By Name -----------------*/
-let rowSearch = document.getElementById("rowSearch");
-
-function displaySearchMealsByName(data) {
-    var Data = data.meals;
-    let cartona = "";
-    for (let i = 0; i < 25; i++) {
-        cartona += `
-                <div class="col-md-3" >
-                    <div class="card  border-0 rounded-2" id="cardImg" onclick="getMealsDescriptions('${Data[i].idMeal}')">
-                        <div class="img rounded-2">
-                            <div class="layout rounded-2 d-flex align-items-center" id="layoutImg">
-                                <h1 class="text-black ms-2"> ${Data[i].strMeal} </h1>
-                            </div>
-                            <img src="${Data[i].strMealThumb}" alt="img" class="w-100 rounded-2" id="Images">
-                        </div>
-                    </div>
-                </div>
-            `;
-    }
-    rowSearch.innerHTML = cartona;
-}
-
+//!------------ Start Section connection API Search Meals by Name ---------------/
 let SearchMealsBtn = document.getElementById("SearchMealsBtn");
 SearchMealsBtn.addEventListener('click', () => {
-
     $(function () {
         $('#preloader').fadeIn(800).fadeOut(1000);
     })
 
     let isHidden = true;
     if (isHidden == true) {
-        meals.classList.add('d-none');
-        meals.classList.remove('d-block');
-
-        mealsDescription.classList.add('d-none');
-        mealsDescription.classList.remove('d-block');
-
-        ContactUs.classList.remove('d-block');
-        ContactUs.classList.add('d-none');
-
-        mealsCategories.classList.remove('d-block');
-        mealsCategories.classList.add('d-none');
-
-        mealsArea.classList.remove('d-block');
-        mealsArea.classList.add('d-none');
-
-        mealsIngredients.classList.remove('d-block');
-        mealsIngredients.classList.add('d-none');
-
+        close();
         mealsSearch.classList.add('d-block');
         mealsSearch.classList.remove('d-none');
-
-        $('body').removeClass('show-sidebar');
-        $('body').find('.js-menu-toggle').removeClass('active');
     }
 })
-//!------------ End Section Search Meals -----------------*/
+async function searchInputName(name) {
+    let searchMealsDataCon = await fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${name}`);
+    let searchMealsDataByName = await searchMealsDataCon.json();
 
-//!==================================================/
-//!==================================================/
-//!==================================================/
+    searchMealsDataByName.meals ? displayMainMeals(searchMealsDataByName) : displayMainMeals([])
+    
+    close();
+    mealsSearch.classList.add('d-block');
+    mealsSearch.classList.remove('d-none');
+    meals.classList.add('d-block');
+    meals.classList.remove('d-none');
+};
+//!------------ End Section connection API Search Meals by Name ---------------/
 
 // //!------------ Start Section connection API Search Meals by F-letter ---------------/
 
@@ -329,116 +246,61 @@ async function searchInputFletter(Letter) {
     let searchMealsDataCon = await fetch(`https://www.themealdb.com/api/json/v1/1/search.php?f=${Letter}`);
     let searchMealsDataByFLetter = await searchMealsDataCon.json();
 
-    searchMealsDataByFLetter.meals ? displaySearchMealsByFLetter(searchMealsDataByFLetter) : displaySearchMealsByFLetter([])
+    searchMealsDataByFLetter.meals ? displayMainMeals(searchMealsDataByFLetter) : displayMainMeals([])
+    close();
+    mealsSearch.classList.add('d-block');
+    mealsSearch.classList.remove('d-none');
+    meals.classList.add('d-block');
+    meals.classList.remove('d-none');
 }
 //!------------ End Section connection API Search Meals by F-letter ---------------/
-
-//!------------ End Section Search Meals By F-letter ---------------/
-
-function displaySearchMealsByFLetter(data) {
-    var Data = data.meals;
-    let cartona = " ";
-    for (let i = 0; i < Data.length; i++) {
-        cartona += `
-                <div class="col-md-3" >
-                    <div class="card  border-0 rounded-2" id="cardImg" onclick="getMealsDescriptions('${Data[i].idMeal}')">
-                        <div class="img rounded-2">
-                            <div class="layout rounded-2 d-flex align-items-center" id="layoutImg">
-                                <h1 class="text-black ms-2"> ${Data[i].strMeal} </h1>
-                            </div>
-                            <img src="${Data[i].strMealThumb}" alt="img" class="w-100 rounded-2" id="Images">
-                        </div>
-                    </div>
-                </div>
-            `;
-    }
-    rowSearch.innerHTML = cartona;
-}
-//!------------ End Section Search Meals F-letter -----------------*/
 
 //!==================================================/
 //!==================================================/
 //!==================================================/
 
 //!------------ Start Section Categories Connection -----------------*/
-
 async function CategoriesCon() {
     let CategoriesCon = await fetch('https://www.themealdb.com/api/json/v1/1/categories.php');
     let categories = await CategoriesCon.json();
     return categories;
 }
-
-
 async function startCategoriesApp() {
     let category = await CategoriesCon();
     if (category.categories !== null) {
         displayCategories(category);
     }
 }
-startCategoriesApp()
-// document.addEventListener('DOMContentLoaded', startCategoriesApp);
-
-
+startCategoriesApp();
 //!------------ End Section Categories Connection -----------------*/
 
-
 //!------------ Start Section Categories Connection -----------------*/
-
 async function CategoriesConByName(name) {
     let CategoriesCon = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${name}`);
     let categories = await CategoriesCon.json();
 
     displayMainMeals(categories);
-
+    close();
     meals.classList.add('d-block');
     meals.classList.remove('d-none');
-
-    mealsCategories.classList.remove('d-block');
-    mealsCategories.classList.add('d-none');
-}
-
+};
 //!------------ End Section Categories Connection -----------------*/
 
-
 //!------------ Start Section Categories -----------------*/
-
-
 let CategoriesBtn = document.getElementById("CategoriesBtn");
 
 CategoriesBtn.addEventListener('click', () => {
-
     $(function () {
         $('#preloader').fadeIn(800).fadeOut(1000);
     })
 
     let isHidden = true;
     if (isHidden == true) {
-        meals.classList.remove('d-block');
-        meals.classList.add('d-none');
-
-        mealsDescription.classList.add('d-none');
-        mealsDescription.classList.remove('d-block');
-
-        mealsSearch.classList.remove('d-block');
-        mealsSearch.classList.add('d-none');
-
+        close();
         mealsCategories.classList.add('d-block');
         mealsCategories.classList.remove('d-none');
-
-        mealsArea.classList.remove('d-block');
-        mealsArea.classList.add('d-none');
-
-        mealsIngredients.classList.remove('d-block');
-        mealsIngredients.classList.add('d-none');
-
-        ContactUs.classList.remove('d-block');
-        ContactUs.classList.add('d-none');
-
-        $('body').removeClass('show-sidebar');
-        $('body').find('.js-menu-toggle').removeClass('active');
     }
-})
-
+});
 let rowCategories = document.getElementById("rowCategories");
 
 function displayCategories(data) {
@@ -460,8 +322,7 @@ function displayCategories(data) {
             `;
     }
     rowCategories.innerHTML = cartona;
-}
-
+};
 //!------------ End Section Categories -----------------*/
 
 //!==================================================/
@@ -476,78 +337,41 @@ async function AreaCon() {
     let Area = await AreaCon.json();
     return Area;
 }
-
-
 async function startAreaApp() {
     let Area = await AreaCon();
     if (Area.meals !== null) {
         displayArea(Area);
     }
 }
-startAreaApp()
-// document.addEventListener('DOMContentLoaded', startAreaApp);
-
-
+startAreaApp();
 //!------------ End Section Area Connection -----------------*/
 
-//!------------ End Section Area Connection BY Name -----------------*/
-
+//!------------ Start Section Area Connection BY Name -----------------*/
 async function AreaConByName(name) {
     let AreaCon = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?a=${name}`);
     let Area = await AreaCon.json();
 
     displayMainMeals(Area);
-
+    close();
     meals.classList.add('d-block');
     meals.classList.remove('d-none');
-
-    mealsCategories.classList.remove('d-block');
-    mealsCategories.classList.add('d-none');
-
-    mealsArea.classList.remove('d-block');
-    mealsArea.classList.add('d-none');
-}
+};
 //!------------ End Section Area Connection BY Name -----------------*/
 
 //!------------ Start Section Area -----------------*/
-
-
 let AreaBtn = document.getElementById("AreaBtn");
-
 AreaBtn.addEventListener('click', () => {
-
     $(function () {
         $('#preloader').fadeIn(800).fadeOut(1000);
     })
 
     let isHidden = true;
     if (isHidden == true) {
-        meals.classList.remove('d-block');
-        meals.classList.add('d-none');
-
-        mealsDescription.classList.add('d-none');
-        mealsDescription.classList.remove('d-block');
-
-        mealsSearch.classList.remove('d-block');
-        mealsSearch.classList.add('d-none');
-
-        mealsCategories.classList.remove('d-block');
-        mealsCategories.classList.add('d-none');
-
+        close();
         mealsArea.classList.add('d-block');
         mealsArea.classList.remove('d-none');
-
-        mealsIngredients.classList.remove('d-block');
-        mealsIngredients.classList.add('d-none');
-
-        ContactUs.classList.remove('d-block');
-        ContactUs.classList.add('d-none');
-
-        $('body').removeClass('show-sidebar');
-        $('body').find('.js-menu-toggle').removeClass('active');
     }
-})
-
+});
 let rowArea = document.getElementById("rowArea");
 
 function displayArea(data) {
@@ -565,24 +389,18 @@ function displayArea(data) {
     }
     rowArea.innerHTML = cartona;
 }
-
 //!------------ End Section Categories -----------------*/
 
-
 //!==================================================/
 //!==================================================/
 //!==================================================/
-
 
 //!------------ Start Section Ingredients Connection -----------------*/
-
 async function IngredientsCon() {
     let IngredientsCon = await fetch('https://www.themealdb.com/api/json/v1/1/list.php?i=list');
     let Ingredients = await IngredientsCon.json();
     return Ingredients;
 }
-
-
 async function startIngredientsApp() {
     let Ingredients = await IngredientsCon();
     if (Ingredients.meals !== null) {
@@ -590,71 +408,35 @@ async function startIngredientsApp() {
     }
 }
 startIngredientsApp();
-// document.addEventListener('DOMContentLoaded', startIngredientsApp);
-
-
 //!------------ End Section Ingredients Connection -----------------*/
 
 //!------------ End Section Ingredients Connection BY Name -----------------*/
-
 async function IngredientsConByName(name) {
     let IngredientsCon = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${name}`);
     let Ingredients = await IngredientsCon.json();
 
     displayMainMeals(Ingredients);
-
+    close();
     meals.classList.add('d-block');
     meals.classList.remove('d-none');
-
-    mealsCategories.classList.remove('d-block');
-    mealsCategories.classList.add('d-none');
-
-    mealsIngredients.classList.remove('d-block');
-    mealsIngredients.classList.add('d-none');
 }
 //!------------ End Section Ingredients Connection BY Name -----------------*/
 
 //!------------ Start Section Ingredients -----------------*/
-
-
 let IngredientsBtn = document.getElementById("IngredientsBtn");
-
 IngredientsBtn.addEventListener('click', () => {
-
     $(function () {
         $('#preloader').fadeIn(800).fadeOut(1000);
     })
 
     let isHidden = true;
     if (isHidden == true) {
-        meals.classList.remove('d-block');
-        meals.classList.add('d-none');
-
-        mealsDescription.classList.add('d-none');
-        mealsDescription.classList.remove('d-block');
-
-        mealsSearch.classList.remove('d-block');
-        mealsSearch.classList.add('d-none');
-
-        mealsCategories.classList.remove('d-block');
-        mealsCategories.classList.add('d-none');
-
-        mealsArea.classList.remove('d-block');
-        mealsArea.classList.add('d-none');
-
+        close();
         mealsIngredients.classList.add('d-block');
         mealsIngredients.classList.remove('d-none');
-
-        ContactUs.classList.remove('d-block');
-        ContactUs.classList.add('d-none');
-
-        $('body').removeClass('show-sidebar');
-        $('body').find('.js-menu-toggle').removeClass('active');
     }
-})
-
+});
 let rowIngredients = document.getElementById("rowIngredients");
-
 function displayIngredients(data) {
     var Data = data.meals;
     let cartona = " ";
@@ -670,8 +452,7 @@ function displayIngredients(data) {
             `;
     }
     rowIngredients.innerHTML = cartona;
-}
-
+};
 //!------------ End Section Ingredients -----------------*/
 
 //!==================================================/
@@ -679,71 +460,38 @@ function displayIngredients(data) {
 //!==================================================/
 
 //!------------ Start Section contactUs -----------------*/
-
 let ContactUsBtn = document.getElementById("ContactUsBtn");
-
 ContactUsBtn.addEventListener('click', () => {
-
     $(function () {
         $('#preloader').fadeIn(800).fadeOut(800);
     })
-
     let isHidden = true;
     if (isHidden == true) {
-        meals.classList.remove('d-block');
-        meals.classList.add('d-none');
-
-        mealsDescription.classList.add('d-none');
-        mealsDescription.classList.remove('d-block');
-
-        mealsSearch.classList.remove('d-block');
-        mealsSearch.classList.add('d-none');
-
-        mealsCategories.classList.remove('d-block');
-        mealsCategories.classList.add('d-none');
-
-        mealsArea.classList.remove('d-block');
-        mealsArea.classList.add('d-none');
-
-        mealsIngredients.classList.remove('d-block');
-        mealsIngredients.classList.add('d-none');
-
+        close();
         ContactUs.classList.add('d-block');
         ContactUs.classList.remove('d-none');
-
-        $('body').removeClass('show-sidebar');
-        $('body').find('.js-menu-toggle').removeClass('active');
     }
 })
-
 submitBtn = document.getElementById("submitBtn")
-
 
 document.getElementById("nameInput").addEventListener("focus", () => {
     nameInputTouched = true
 })
-
 document.getElementById("emailInput").addEventListener("focus", () => {
     emailInputTouched = true
 })
-
 document.getElementById("phoneInput").addEventListener("focus", () => {
     phoneInputTouched = true
 })
-
 document.getElementById("ageInput").addEventListener("focus", () => {
     ageInputTouched = true
 })
-
 document.getElementById("passwordInput").addEventListener("focus", () => {
     passwordInputTouched = true
 })
-
 document.getElementById("repasswordInput").addEventListener("focus", () => {
     repasswordInputTouched = true
 })
-
-
 let nameInputTouched = false;
 let emailInputTouched = false;
 let phoneInputTouched = false;
@@ -755,10 +503,8 @@ function inputsValidation() {
     if (nameInputTouched) {
         if (nameValidation()) {
             document.getElementById("nameAlert").classList.replace("d-block", "d-none")
-
         } else {
             document.getElementById("nameAlert").classList.replace("d-none", "d-block")
-
         }
     }
     if (emailInputTouched) {
@@ -767,34 +513,27 @@ function inputsValidation() {
             document.getElementById("emailAlert").classList.replace("d-block", "d-none")
         } else {
             document.getElementById("emailAlert").classList.replace("d-none", "d-block")
-
         }
     }
-
     if (phoneInputTouched) {
         if (phoneValidation()) {
             document.getElementById("phoneAlert").classList.replace("d-block", "d-none")
         } else {
             document.getElementById("phoneAlert").classList.replace("d-none", "d-block")
-
         }
     }
-
     if (ageInputTouched) {
         if (ageValidation()) {
             document.getElementById("ageAlert").classList.replace("d-block", "d-none")
         } else {
             document.getElementById("ageAlert").classList.replace("d-none", "d-block")
-
         }
     }
-
     if (passwordInputTouched) {
         if (passwordValidation()) {
             document.getElementById("passwordAlert").classList.replace("d-block", "d-none")
         } else {
             document.getElementById("passwordAlert").classList.replace("d-none", "d-block")
-
         }
     }
     if (repasswordInputTouched) {
@@ -802,11 +541,8 @@ function inputsValidation() {
             document.getElementById("repasswordAlert").classList.replace("d-block", "d-none")
         } else {
             document.getElementById("repasswordAlert").classList.replace("d-none", "d-block")
-
         }
     }
-
-
     if (nameValidation() &&
         emailValidation() &&
         phoneValidation() &&
@@ -818,27 +554,21 @@ function inputsValidation() {
         submitBtn.setAttribute("disabled", true)
     }
 }
-
 function nameValidation() {
     return (/^[a-zA-Z ]+$/.test(document.getElementById("nameInput").value))
 }
-
 function emailValidation() {
     return (/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(document.getElementById("emailInput").value))
 }
-
 function phoneValidation() {
     return (/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/.test(document.getElementById("phoneInput").value))
 }
-
 function ageValidation() {
     return (/^(0?[1-9]|[1-9][0-9]|[1][1-9][1-9]|200)$/.test(document.getElementById("ageInput").value))
 }
-
 function passwordValidation() {
     return (/^(?=.*\d)(?=.*[a-z])[0-9a-zA-Z]{8,}$/.test(document.getElementById("passwordInput").value))
 }
-
 function repasswordValidation() {
     return document.getElementById("repasswordInput").value == document.getElementById("passwordInput").value
 }
