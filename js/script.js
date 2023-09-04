@@ -293,7 +293,6 @@ CategoriesBtn.addEventListener('click', () => {
     $(function () {
         $('#preloader').fadeIn(800).fadeOut(1000);
     })
-
     let isHidden = true;
     if (isHidden == true) {
         close();
