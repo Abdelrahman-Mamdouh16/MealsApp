@@ -1,8 +1,4 @@
 //!------------ Start Section Global get ---------------/
-// 
-$(function () {
-    $('#preloader').fadeOut(1000);
-})
 
 let meals = document.getElementById("meals");
 let mealsDescription = document.getElementById('mealsDescription');
@@ -16,7 +12,7 @@ let returnIcon = document.getElementById("returnIcon");
 
 returnIcon.addEventListener('click', async function () {
     $(function () {
-        $('#preloader').fadeIn(1000).fadeOut(1000);
+        $('#preloader').fadeIn(1000).fadeOut(800);
     })
 
     let isHidden = true;
@@ -54,9 +50,6 @@ returnIcon.addEventListener('click', async function () {
 
 //!------------ End Section Global get ---------------/
 
-
-
-
 //!------------ Start Section side minu ---------------/
 $(function () {
     $('.js-menu-toggle').click(function (e) {
@@ -66,17 +59,9 @@ $(function () {
         if ($('body').hasClass('show-sidebar')) {
             $('body').removeClass('show-sidebar');
             $this.removeClass('active');
-            // $('#side_navlinks').animate({
-            //     position:fixed,
-            //     left:50
-            // },500);
         } else {
             $('body').addClass('show-sidebar');
             $this.addClass('active');
-            // $('#side_navlinks').animate({
-            //     position:fixed,
-            //     left:50
-            // },500);
         }
         e.preventDefault();
     });
@@ -107,14 +92,22 @@ async function connectionMainMeals() {
 
 async function startMainApp() {
     let mealsData = await connectionMainMeals();
-    // displayMainMeals(mealsData);
 
-    if (!mealsData.error) {
+    let arr=[];
+    arr.push(mealsData);
+    if(arr.length<0){
+        $(function () {
+            $('#preloader');
+        })
+    }else{
+        $(function () {
+            $('#preloader').fadeOut(500);
+        })
         displayMainMeals(mealsData);
     }
 }
-startMainApp()
-// document.addEventListener('DOMContentLoaded', startMainApp);
+// startMainApp()
+document.addEventListener('DOMContentLoaded', startMainApp);
 
 //!------------ End Section connection API Main Meals ---------------/
 
@@ -156,12 +149,9 @@ function displayMainMeals(data) {
 async function getMealsDescriptions(idMeal) {
     let mealsDataCon = await fetch(`https://themealdb.com/api/json/v1/1/lookup.php?i=${idMeal}`);
     let mealsData = await mealsDataCon.json();
-    // console.log(mealsData);
 
     let isHidden = true;
     if (isHidden == true) {
-
-
 
         meals.classList.remove('d-block');
         meals.classList.add('d-none');
