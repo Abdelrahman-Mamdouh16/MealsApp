@@ -312,7 +312,7 @@ function displayCategories(data) {
                         <div class="img rounded-2" id="img">
                             <div class="layout rounded-2 text-center"  style="overflow-y: scroll;" id="layout">
                                 <h1 class="text-black"> ${Data[i].strCategory}</h1>
-                                <p class="text-black">${Data[i].strCategoryDescription}</p>
+                                <p class="text-black">${Data[i].strCategoryDescription.split(" ").slice(0,20).join(" ")}</p>
                             </div>
                             <img src="${Data[i].strCategoryThumb}" alt="img" class="w-100 rounded-2 bg-transparent" id="images">
                         </div>
@@ -445,7 +445,7 @@ function displayIngredients(data) {
                         <div class="rounded-2 text-center cursor-pointer">
                             <i class="fa-solid fa-drumstick-bite fa-4x"></i>
                             <h3>${Data[i].strIngredient}</h3>
-                            <p style="overflow-y:hidden; height: 150px;">${Data[i].strDescription}</p>
+                            <p style="overflow-y:hidden; height: 150px;">${Data[i].strDescription.split(" ").slice(0,20).join(" ")}</p>
                         </div>
                     </div>
             `;
