@@ -310,7 +310,7 @@ function displayCategories(data) {
                 <div class="col-md-3" id="card">
                     <div class="card  border-0 rounded-2" onclick="CategoriesConByName('${Data[i].strCategory}')">
                         <div class="img rounded-2" id="img">
-                            <div class="layout rounded-2 text-center"  style="overflow-y: scroll;" id="layout">
+                            <div class="layout rounded-2 text-center" id="layout">
                                 <h1 class="text-black"> ${Data[i].strCategory}</h1>
                                 <p class="text-black">${Data[i].strCategoryDescription.split(" ").slice(0,20).join(" ")}</p>
                             </div>
