@@ -78,7 +78,6 @@ $(function () {
 //!==================================================/
 //!==================================================/
 
-
 //!------------ Start Section connection API Main Meals ---------------/
 async function connectionMainMeals() {
     let mealsDataCon = await fetch('https://www.themealdb.com/api/json/v1/1/search.php?s');
@@ -114,21 +113,22 @@ let row = document.getElementById("rowMeals");
 function displayMainMeals(data) {
     var Data = data.meals;
     let cartona = "";
-    for (let i = 0; i < Data.length; i++) {
-        cartona += `
-            <div class="col-md-3" >
-                <div class="card  border-0 rounded-2" id="cardImg" onclick="getMealsDescriptions('${Data[i].idMeal}')">
-                    <div class="img rounded-2">
-                        <div class="layout rounded-2 d-flex align-items-center" id="layoutImg">
-                            <h1 class="text-black ms-2"> ${Data[i].strMeal} </h1>
+
+        for (let i = 0; i < Data.length; i++) {
+            cartona += `
+                <div class="col-md-3" >
+                    <div class="card  border-0 rounded-2" id="cardImg" onclick="getMealsDescriptions('${Data[i].idMeal}')">
+                        <div class="img rounded-2">
+                            <div class="layout rounded-2 d-flex align-items-center" id="layoutImg">
+                                <h1 class="text-black ms-2"> ${Data[i].strMeal} </h1>
+                            </div>
+                            <img src="${Data[i].strMealThumb}" alt="img" class="w-100 rounded-2" id="Images">
                         </div>
-                        <img src="${Data[i].strMealThumb}" alt="img" class="w-100 rounded-2" id="Images">
                     </div>
                 </div>
-            </div>
-        `;
-    }
-    row.innerHTML = cartona;
+            `;
+        }
+        row.innerHTML = cartona;
 }
 //!------------ End Section side Main -----------------*/
 
@@ -229,8 +229,8 @@ async function searchInputName(name) {
     let searchMealsDataCon = await fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${name}`);
     let searchMealsDataByName = await searchMealsDataCon.json();
 
-    searchMealsDataByName.meals ? displayMainMeals(searchMealsDataByName) : displayMainMeals([])
-    
+    searchMealsDataByName.meals != null? displayMainMeals(searchMealsDataByName) : '';
+
     close();
     mealsSearch.classList.add('d-block');
     mealsSearch.classList.remove('d-none');
@@ -312,7 +312,7 @@ function displayCategories(data) {
                         <div class="img rounded-2" id="img">
                             <div class="layout rounded-2 text-center" id="layout">
                                 <h1 class="text-black"> ${Data[i].strCategory}</h1>
-                                <p class="text-black">${Data[i].strCategoryDescription.split(" ").slice(0,20).join(" ")}</p>
+                                <p class="text-black">${Data[i].strCategoryDescription.split(" ").slice(0, 20).join(" ")}</p>
                             </div>
                             <img src="${Data[i].strCategoryThumb}" alt="img" class="w-100 rounded-2 bg-transparent" id="images">
                         </div>
@@ -445,7 +445,7 @@ function displayIngredients(data) {
                         <div class="rounded-2 text-center cursor-pointer">
                             <i class="fa-solid fa-drumstick-bite fa-4x"></i>
                             <h3>${Data[i].strIngredient}</h3>
-                            <p style="overflow-y:hidden; height: 150px;">${Data[i].strDescription.split(" ").slice(0,20).join(" ")}</p>
+                            <p style="overflow-y:hidden; height: 150px;">${Data[i].strDescription.split(" ").slice(0, 20).join(" ")}</p>
                         </div>
                     </div>
             `;
